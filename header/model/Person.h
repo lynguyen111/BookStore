@@ -1,0 +1,35 @@
+#pragma once
+
+#include "core/custom/CustomString.h"
+#include "core/Date.h"
+
+namespace pbl2::model {
+
+class Person {
+public:
+    virtual ~Person() = default;
+
+    const custom::CustomString &getId() const;
+    void setId(const custom::CustomString &value);
+
+    const custom::CustomString &getFullName() const;
+    void setFullName(const custom::CustomString &value);
+
+    const core::Date &getDob() const;
+    void setDob(const core::Date &value);
+
+    bool isActive() const;
+    void setActive(bool value);
+
+protected:
+    Person() = default;
+
+private:
+    custom::CustomString id;
+    custom::CustomString fullName;
+    core::Date dob;
+    bool active{false};
+};
+
+}  // namespace pbl2::model
+
