@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -29,12 +30,13 @@ public:
     QLabel *passwordLabel;
     QLineEdit *usernameEdit;
     QLabel *usernameLabel;
+    QComboBox *comboBox;
 
     void setupUi(QDialog *LoginDialog)
     {
         if (LoginDialog->objectName().isEmpty())
             LoginDialog->setObjectName("LoginDialog");
-        LoginDialog->resize(416, 439);
+        LoginDialog->resize(597, 604);
         LoginDialog->setStyleSheet(QString::fromUtf8("QDialog{\n"
 "background-color: rgb(70, 70, 70);\n"
 "    padding: 6px 12px;\n"
@@ -42,7 +44,7 @@ public:
 "}"));
         titleLabel = new QLabel(LoginDialog);
         titleLabel->setObjectName("titleLabel");
-        titleLabel->setGeometry(QRect(20, 20, 381, 71));
+        titleLabel->setGeometry(QRect(80, 80, 441, 91));
         QFont font;
         font.setFamilies({QString::fromUtf8("Academy Engraved LET")});
         font.setPointSize(18);
@@ -54,7 +56,7 @@ public:
         errorLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
         loginButton = new QPushButton(LoginDialog);
         loginButton->setObjectName("loginButton");
-        loginButton->setGeometry(QRect(230, 330, 151, 51));
+        loginButton->setGeometry(QRect(380, 480, 151, 51));
         loginButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #4CAF50;   /* M\303\240u n\341\273\201n n\303\272t */\n"
 "    color: white;                /* M\303\240u ch\341\273\257 */\n"
@@ -71,7 +73,7 @@ public:
 "}"));
         exitButton = new QPushButton(LoginDialog);
         exitButton->setObjectName("exitButton");
-        exitButton->setGeometry(QRect(30, 330, 161, 51));
+        exitButton->setGeometry(QRect(40, 480, 161, 51));
         exitButton->setAutoFillBackground(false);
         exitButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #E74C3C;   /* M\303\240u n\341\273\201n n\303\272t */\n"
@@ -90,18 +92,21 @@ public:
 "}"));
         passwordEdit = new QLineEdit(LoginDialog);
         passwordEdit->setObjectName("passwordEdit");
-        passwordEdit->setGeometry(QRect(130, 200, 261, 41));
+        passwordEdit->setGeometry(QRect(130, 310, 351, 41));
         passwordEdit->setEchoMode(QLineEdit::EchoMode::Password);
         passwordLabel = new QLabel(LoginDialog);
         passwordLabel->setObjectName("passwordLabel");
-        passwordLabel->setGeometry(QRect(20, 210, 59, 21));
+        passwordLabel->setGeometry(QRect(30, 330, 59, 21));
         usernameEdit = new QLineEdit(LoginDialog);
         usernameEdit->setObjectName("usernameEdit");
-        usernameEdit->setGeometry(QRect(130, 140, 261, 41));
+        usernameEdit->setGeometry(QRect(130, 230, 351, 41));
         usernameEdit->setTabletTracking(true);
         usernameLabel = new QLabel(LoginDialog);
         usernameLabel->setObjectName("usernameLabel");
-        usernameLabel->setGeometry(QRect(20, 150, 93, 28));
+        usernameLabel->setGeometry(QRect(30, 230, 93, 28));
+        comboBox = new QComboBox(LoginDialog);
+        comboBox->setObjectName("comboBox");
+        comboBox->setGeometry(QRect(130, 390, 171, 31));
 
         retranslateUi(LoginDialog);
 

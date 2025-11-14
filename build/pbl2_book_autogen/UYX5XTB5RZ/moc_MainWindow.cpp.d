@@ -758,10 +758,14 @@
   /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service/ReportService.h \
   /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service/StaffService.h \
   /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/PieChart.h \
+  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsChart.h \
+  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsWidget.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QDate \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QEvent \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QMap \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QPair \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QString \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QStringList \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QVector \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q17memory.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q20functional.h \
@@ -771,6 +775,7 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q20utility.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q23utility.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qabstracteventdispatcher.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qabstractitemmodel.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qalgorithms.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qanystringview.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qarraydata.h \
@@ -818,7 +823,9 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qglobalstatic.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qhash.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qhashfunctions.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qiodevice.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qiodevicebase.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qitemselectionmodel.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qiterable.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qiterator.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qlatin1stringview.h \
@@ -845,6 +852,7 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qprocessordetection.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qrect.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qrefcount.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qregularexpression.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qscopedpointer.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qscopeguard.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qset.h \
@@ -891,6 +899,7 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qtversionchecks.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qtypeinfo.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qtypes.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qurl.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qutf8stringview.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qvariant.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qvarlengtharray.h \
@@ -898,6 +907,7 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qversiontagging.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qxptype_traits.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qyieldcpu.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/QColor \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qaction.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qbitmap.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qbrush.h \
@@ -912,21 +922,41 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qkeysequence.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpaintdevice.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpalette.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpicture.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpixelformat.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpixmap.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qpolygon.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qregion.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qrgb.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qrgba64.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtextdocument.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtgui-config.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtguiexports.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtguiglobal.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtransform.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qvalidator.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qwindowdefs.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QFrame \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QLabel \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QListWidget \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QMainWindow \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QWidget \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qabstractitemdelegate.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qabstractitemview.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qabstractscrollarea.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qabstractslider.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qabstractspinbox.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qframe.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qlabel.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qlistview.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qlistwidget.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qmainwindow.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qrubberband.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qsizepolicy.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qslider.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qstyle.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qstyleoption.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtabbar.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtabwidget.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtwidgets-config.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsexports.h \

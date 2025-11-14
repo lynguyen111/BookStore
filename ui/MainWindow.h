@@ -25,6 +25,7 @@
 #include "model/Staff.h"
 #include "SystemConfig.h"
 #include "PieChart.h"
+#include "StatsWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,13 +34,14 @@ class MainWindow;
 class QLabel;
 class QTabWidget;
 class QListWidget;
+class QTableWidget;
 class QLineEdit;
 class QDateEdit;
 class QComboBox;
 class QPushButton;
 class QSpinBox;
 class QCheckBox;
-class QWidget;
+
 namespace pbl2::ui {
 
 class MainWindow : public QMainWindow {
@@ -155,6 +157,8 @@ private:
     QLabel *summaryFinesValue{nullptr};
     QPushButton *navRailButton{nullptr};
     QLabel *statsLabel{nullptr};
+    
+    StatsWidget *statsWidget{nullptr};
 
     custom::CustomString dataDirectory;
     service::BookService bookService;
@@ -205,6 +209,23 @@ private:
     QSpinBox *maxBorrowDaysSpin{nullptr};
     QSpinBox *finePerDaySpin{nullptr};
     QSpinBox *maxBooksPerReaderSpin{nullptr};
+
+    QComboBox *timePeriodCombo{nullptr};
+    QTableWidget *loanStatsTable{nullptr};
+    QLabel *overdueCount{nullptr};
+    QLabel *monthlyFinesValue{nullptr};
+    QListWidget *activeReadersList{nullptr};
+    QListWidget *topBooksList{nullptr};
+    StatsChart *topBooksChart{nullptr};
+    StatsChart *revenueChart{nullptr};
+    QPushButton *applyFilterButton{nullptr};
+    
+    QDate statsStartDate;
+    QDate statsEndDate;
+
+    void applyStatsFilter();
+    void updateStatsCards();
+    void updateStatsCharts();
 
     // void exportStatisticsPdf(); // Removed - no longer needed
 

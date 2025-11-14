@@ -271,6 +271,12 @@
 },
 {
   "directory": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build",
+  "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/pbl2_book_autogen/include -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book -isystem /opt/homebrew/lib/QtWidgets.framework/Headers -iframework /opt/homebrew/lib -isystem /opt/homebrew/lib/QtCore.framework/Headers -isystem /opt/homebrew/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/include -isystem /opt/homebrew/lib/QtGui.framework/Headers -g -std=gnu++17 -arch arm64 -o CMakeFiles/pbl2_book.dir/ui/StatsWidget.cpp.o -c /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsWidget.cpp",
+  "file": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsWidget.cpp",
+  "output": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/CMakeFiles/pbl2_book.dir/ui/StatsWidget.cpp.o"
+},
+{
+  "directory": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build",
   "command": "/usr/bin/clang++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/pbl2_book_autogen/include -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui -I/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book -isystem /opt/homebrew/lib/QtWidgets.framework/Headers -iframework /opt/homebrew/lib -isystem /opt/homebrew/lib/QtCore.framework/Headers -isystem /opt/homebrew/share/qt/mkspecs/macx-clang -isystem /opt/homebrew/include -isystem /opt/homebrew/lib/QtGui.framework/Headers -g -std=gnu++17 -arch arm64 -o CMakeFiles/pbl2_book.dir/qrc_icons.cpp.o -c /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/qrc_icons.cpp",
   "file": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/qrc_icons.cpp",
   "output": "/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/CMakeFiles/pbl2_book.dir/qrc_icons.cpp.o"

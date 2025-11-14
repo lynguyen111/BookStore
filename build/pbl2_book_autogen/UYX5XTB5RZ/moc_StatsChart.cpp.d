@@ -1,4 +1,4 @@
-/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/pbl2_book_autogen/UYX5XTB5RZ/moc_LoginDialog.cpp: /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/LoginDialog.h \
+/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/pbl2_book_autogen/UYX5XTB5RZ/moc_StatsChart.cpp: /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsChart.h \
   /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/build/pbl2_book_autogen/moc_predefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/AvailabilityInternal.h \
@@ -729,20 +729,8 @@
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/limits.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/ptrcheck.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/Date.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/DateTime.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/custom/CaseSensitivity.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/custom/CustomString.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/custom/DynamicArray.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/core/custom/Optional.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/model/Account.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/model/Person.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/model/Staff.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/repository/AccountsRepository.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/repository/StaffRepository.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service/AccountService.h \
-  /Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/header/service/StaffService.h \
-  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QString \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QStringList \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/QVector \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q17memory.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q20functional.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/q20iterator.h \
@@ -865,9 +853,11 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qutf8stringview.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qvariant.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qvarlengtharray.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qvector.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qversiontagging.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qxptype_traits.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtCore.framework/Versions/A/Headers/qyieldcpu.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/QColor \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qaction.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qbitmap.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qbrush.h \
@@ -893,8 +883,7 @@
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtguiglobal.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qtransform.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtGui.framework/Versions/A/Headers/qwindowdefs.h \
-  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QDialog \
-  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qdialog.h \
+  /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/QWidget \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qsizepolicy.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtwidgets-config.h \
   /opt/homebrew/Cellar/qtbase/6.9.3/lib/QtWidgets.framework/Versions/A/Headers/qtwidgetsexports.h \

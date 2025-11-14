@@ -25,12 +25,14 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <statschart.h>
 #include "PieChart.h"
 
 QT_BEGIN_NAMESPACE
@@ -118,54 +120,53 @@ public:
     QPushButton *rejectReportButton;
     QSpacerItem *reportsActionsSpacer;
     QWidget *statsTab;
+    QVBoxLayout *statsTabOuterLayout;
+    QScrollArea *statsScrollArea;
+    QWidget *statsScrollContent;
     QVBoxLayout *statsTabLayout;
-    QLabel *statsTitle;
-    QFrame *simpleStatsFrame;
-    QGridLayout *simpleStatsLayout;
-    QFrame *booksStatsCard;
-    QVBoxLayout *booksCardLayout;
-    QLabel *booksIcon;
+    QGroupBox *statsFilterGroup;
+    QHBoxLayout *statsFilterLayout;
+    QLabel *timePeriodLabel;
+    QComboBox *timePeriodCombo;
+    QPushButton *applyFilterButton;
+    QSpacerItem *spacerItem;
+    QHBoxLayout *statsCardsLayout;
+    QGroupBox *totalBooksCard;
     QLabel *totalBooksValue;
-    QLabel *totalBooksLabel;
-    QFrame *readersStatsCard;
-    QVBoxLayout *readersCardLayout;
-    QLabel *readersIcon;
+    QGroupBox *totalReadersCard;
     QLabel *totalReadersValue;
-    QLabel *totalReadersLabel;
-    QFrame *loansStatsCard;
-    QVBoxLayout *loansCardLayout;
-    QLabel *loansIcon;
+    QGroupBox *totalLoansCard;
     QLabel *totalLoansValue;
-    QLabel *totalLoansLabel;
-    QFrame *overdueStatsCard;
-    QVBoxLayout *overdueCardLayout;
-    QLabel *overdueIcon;
-    QLabel *overdueLoansValue;
-    QLabel *overdueLoansLabel;
-    QLabel *statisticsSummaryLabel;
-    QFrame *chartsFrame;
-    QHBoxLayout *chartsLayout;
-    QFrame *summaryStatsPanel;
-    QVBoxLayout *summaryStatsLayout;
-    QLabel *summaryStatsTitle;
-    QGridLayout *summaryStatsGrid;
-    QLabel *summaryBorrowedLabel;
-    QLabel *summaryBorrowedValue;
-    QLabel *summaryReturnedLabel;
-    QLabel *summaryReturnedValue;
-    QLabel *summaryOverdueLabel;
-    QLabel *summaryOverdueValue;
-    QLabel *summaryFinesLabel;
-    QLabel *summaryFinesValue;
-    QLabel *summaryStatsNote;
-    QFrame *rightStatsPanel;
-    QVBoxLayout *rightStatsLayout;
-    QFrame *finesStatsCard;
-    QVBoxLayout *finesCardLayout;
-    QLabel *finesIcon;
+    QGroupBox *totalFinesCard;
     QLabel *totalFinesValue;
-    QLabel *finesLabel;
-    QSpacerItem *statsVerticalSpacer;
+    QHBoxLayout *chartsRowLayout;
+    QFrame *topBooksFrame;
+    QVBoxLayout *topBooksFrameLayout;
+    QLabel *topBooksTitle;
+    StatsChart *topBooksChart;
+    QFrame *topBooksListFrame;
+    QVBoxLayout *topBooksListLayout;
+    QLabel *topBooksListTitle;
+    QListWidget *topBooksList;
+    QHBoxLayout *bottomRowLayout;
+    QVBoxLayout *warningColumn;
+    QFrame *overdueWarningFrame;
+    QVBoxLayout *vboxLayout;
+    QLabel *overdueWarningTitle;
+    QLabel *overdueCount;
+    QFrame *monthlyFinesFrame;
+    QVBoxLayout *vboxLayout1;
+    QLabel *monthlyFinesTitle;
+    QLabel *monthlyFinesValue;
+    QLabel *monthlyFinesSubtitle;
+    QFrame *revenueChartFrame;
+    QVBoxLayout *vboxLayout2;
+    QLabel *revenueChartTitle;
+    StatsChart *revenueChart;
+    QFrame *activeReadersFrame;
+    QVBoxLayout *vboxLayout3;
+    QLabel *activeReadersTitle;
+    QListWidget *activeReadersList;
     QWidget *staffsTab;
     QVBoxLayout *staffsTabLayout;
     QGroupBox *staffsFilterGroup;
@@ -599,314 +600,284 @@ public:
         tabs->addTab(reportsTab, QString());
         statsTab = new QWidget();
         statsTab->setObjectName("statsTab");
-        statsTabLayout = new QVBoxLayout(statsTab);
-        statsTabLayout->setSpacing(5);
+        statsTabOuterLayout = new QVBoxLayout(statsTab);
+        statsTabOuterLayout->setSpacing(0);
+        statsTabOuterLayout->setObjectName("statsTabOuterLayout");
+        statsTabOuterLayout->setContentsMargins(0, 0, 0, 0);
+        statsScrollArea = new QScrollArea(statsTab);
+        statsScrollArea->setObjectName("statsScrollArea");
+        statsScrollArea->setWidgetResizable(true);
+        statsScrollArea->setFrameShape(QFrame::NoFrame);
+        statsScrollContent = new QWidget();
+        statsScrollContent->setObjectName("statsScrollContent");
+        statsScrollContent->setGeometry(QRect(0, 0, 1100, 750));
+        statsTabLayout = new QVBoxLayout(statsScrollContent);
+        statsTabLayout->setSpacing(10);
         statsTabLayout->setObjectName("statsTabLayout");
-        statsTabLayout->setContentsMargins(8, 5, 8, 5);
-        statsTitle = new QLabel(statsTab);
-        statsTitle->setObjectName("statsTitle");
+        statsTabLayout->setContentsMargins(12, 12, 12, 12);
+        statsFilterGroup = new QGroupBox(statsScrollContent);
+        statsFilterGroup->setObjectName("statsFilterGroup");
+        statsFilterLayout = new QHBoxLayout(statsFilterGroup);
+        statsFilterLayout->setSpacing(12);
+        statsFilterLayout->setObjectName("statsFilterLayout");
+        timePeriodLabel = new QLabel(statsFilterGroup);
+        timePeriodLabel->setObjectName("timePeriodLabel");
         QFont font2;
-        font2.setPointSize(18);
+        font2.setPointSize(11);
         font2.setBold(true);
-        statsTitle->setFont(font2);
-        statsTitle->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        timePeriodLabel->setFont(font2);
 
-        statsTabLayout->addWidget(statsTitle);
+        statsFilterLayout->addWidget(timePeriodLabel);
 
-        simpleStatsFrame = new QFrame(statsTab);
-        simpleStatsFrame->setObjectName("simpleStatsFrame");
-        simpleStatsFrame->setFrameShape(QFrame::Shape::StyledPanel);
-        simpleStatsFrame->setFrameShadow(QFrame::Shadow::Raised);
-        simpleStatsLayout = new QGridLayout(simpleStatsFrame);
-        simpleStatsLayout->setSpacing(8);
-        simpleStatsLayout->setObjectName("simpleStatsLayout");
-        simpleStatsLayout->setContentsMargins(10, 8, 10, 8);
-        booksStatsCard = new QFrame(simpleStatsFrame);
-        booksStatsCard->setObjectName("booksStatsCard");
-        booksStatsCard->setFrameShape(QFrame::Shape::StyledPanel);
-        booksCardLayout = new QVBoxLayout(booksStatsCard);
-        booksCardLayout->setSpacing(10);
-        booksCardLayout->setObjectName("booksCardLayout");
-        booksIcon = new QLabel(booksStatsCard);
-        booksIcon->setObjectName("booksIcon");
-        QFont font3;
-        font3.setPointSize(32);
-        booksIcon->setFont(font3);
-        booksIcon->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        timePeriodCombo = new QComboBox(statsFilterGroup);
+        timePeriodCombo->addItem(QString());
+        timePeriodCombo->addItem(QString());
+        timePeriodCombo->addItem(QString());
+        timePeriodCombo->addItem(QString());
+        timePeriodCombo->setObjectName("timePeriodCombo");
+        timePeriodCombo->setMinimumSize(QSize(150, 0));
 
-        booksCardLayout->addWidget(booksIcon);
+        statsFilterLayout->addWidget(timePeriodCombo);
 
-        totalBooksValue = new QLabel(booksStatsCard);
+        applyFilterButton = new QPushButton(statsFilterGroup);
+        applyFilterButton->setObjectName("applyFilterButton");
+
+        statsFilterLayout->addWidget(applyFilterButton);
+
+        spacerItem = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        statsFilterLayout->addItem(spacerItem);
+
+
+        statsTabLayout->addWidget(statsFilterGroup);
+
+        statsCardsLayout = new QHBoxLayout();
+        statsCardsLayout->setSpacing(12);
+        statsCardsLayout->setObjectName("statsCardsLayout");
+        totalBooksCard = new QGroupBox(statsScrollContent);
+        totalBooksCard->setObjectName("totalBooksCard");
+        totalBooksCard->setMinimumSize(QSize(150, 90));
+        totalBooksCard->setMaximumSize(QSize(16777215, 90));
+        totalBooksValue = new QLabel(totalBooksCard);
         totalBooksValue->setObjectName("totalBooksValue");
-        QFont font4;
-        font4.setPointSize(36);
-        font4.setBold(true);
-        totalBooksValue->setFont(font4);
-        totalBooksValue->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        totalBooksValue->setGeometry(QRect(10, 30, 130, 40));
+        totalBooksValue->setAlignment(Qt::AlignCenter);
+        QFont font3;
+        font3.setPointSize(20);
+        font3.setBold(true);
+        totalBooksValue->setFont(font3);
 
-        booksCardLayout->addWidget(totalBooksValue);
+        statsCardsLayout->addWidget(totalBooksCard);
 
-        totalBooksLabel = new QLabel(booksStatsCard);
-        totalBooksLabel->setObjectName("totalBooksLabel");
-        totalBooksLabel->setFont(font);
-        totalBooksLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        booksCardLayout->addWidget(totalBooksLabel);
-
-
-        simpleStatsLayout->addWidget(booksStatsCard, 0, 0, 1, 1);
-
-        readersStatsCard = new QFrame(simpleStatsFrame);
-        readersStatsCard->setObjectName("readersStatsCard");
-        readersStatsCard->setFrameShape(QFrame::Shape::StyledPanel);
-        readersCardLayout = new QVBoxLayout(readersStatsCard);
-        readersCardLayout->setSpacing(10);
-        readersCardLayout->setObjectName("readersCardLayout");
-        readersIcon = new QLabel(readersStatsCard);
-        readersIcon->setObjectName("readersIcon");
-        readersIcon->setFont(font3);
-        readersIcon->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        readersCardLayout->addWidget(readersIcon);
-
-        totalReadersValue = new QLabel(readersStatsCard);
+        totalReadersCard = new QGroupBox(statsScrollContent);
+        totalReadersCard->setObjectName("totalReadersCard");
+        totalReadersCard->setMinimumSize(QSize(150, 90));
+        totalReadersCard->setMaximumSize(QSize(16777215, 90));
+        totalReadersValue = new QLabel(totalReadersCard);
         totalReadersValue->setObjectName("totalReadersValue");
-        totalReadersValue->setFont(font4);
-        totalReadersValue->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        totalReadersValue->setGeometry(QRect(10, 30, 130, 40));
+        totalReadersValue->setAlignment(Qt::AlignCenter);
+        totalReadersValue->setFont(font3);
 
-        readersCardLayout->addWidget(totalReadersValue);
+        statsCardsLayout->addWidget(totalReadersCard);
 
-        totalReadersLabel = new QLabel(readersStatsCard);
-        totalReadersLabel->setObjectName("totalReadersLabel");
-        totalReadersLabel->setFont(font);
-        totalReadersLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        readersCardLayout->addWidget(totalReadersLabel);
-
-
-        simpleStatsLayout->addWidget(readersStatsCard, 0, 1, 1, 1);
-
-        loansStatsCard = new QFrame(simpleStatsFrame);
-        loansStatsCard->setObjectName("loansStatsCard");
-        loansStatsCard->setFrameShape(QFrame::Shape::StyledPanel);
-        loansCardLayout = new QVBoxLayout(loansStatsCard);
-        loansCardLayout->setSpacing(10);
-        loansCardLayout->setObjectName("loansCardLayout");
-        loansIcon = new QLabel(loansStatsCard);
-        loansIcon->setObjectName("loansIcon");
-        loansIcon->setFont(font3);
-        loansIcon->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        loansCardLayout->addWidget(loansIcon);
-
-        totalLoansValue = new QLabel(loansStatsCard);
+        totalLoansCard = new QGroupBox(statsScrollContent);
+        totalLoansCard->setObjectName("totalLoansCard");
+        totalLoansCard->setMinimumSize(QSize(150, 90));
+        totalLoansCard->setMaximumSize(QSize(16777215, 90));
+        totalLoansValue = new QLabel(totalLoansCard);
         totalLoansValue->setObjectName("totalLoansValue");
-        totalLoansValue->setFont(font4);
-        totalLoansValue->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        totalLoansValue->setGeometry(QRect(10, 30, 130, 40));
+        totalLoansValue->setAlignment(Qt::AlignCenter);
+        totalLoansValue->setFont(font3);
 
-        loansCardLayout->addWidget(totalLoansValue);
+        statsCardsLayout->addWidget(totalLoansCard);
 
-        totalLoansLabel = new QLabel(loansStatsCard);
-        totalLoansLabel->setObjectName("totalLoansLabel");
-        totalLoansLabel->setFont(font);
-        totalLoansLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        loansCardLayout->addWidget(totalLoansLabel);
-
-
-        simpleStatsLayout->addWidget(loansStatsCard, 1, 0, 1, 1);
-
-        overdueStatsCard = new QFrame(simpleStatsFrame);
-        overdueStatsCard->setObjectName("overdueStatsCard");
-        overdueStatsCard->setFrameShape(QFrame::Shape::StyledPanel);
-        overdueCardLayout = new QVBoxLayout(overdueStatsCard);
-        overdueCardLayout->setSpacing(10);
-        overdueCardLayout->setObjectName("overdueCardLayout");
-        overdueIcon = new QLabel(overdueStatsCard);
-        overdueIcon->setObjectName("overdueIcon");
-        overdueIcon->setFont(font3);
-        overdueIcon->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        overdueCardLayout->addWidget(overdueIcon);
-
-        overdueLoansValue = new QLabel(overdueStatsCard);
-        overdueLoansValue->setObjectName("overdueLoansValue");
-        overdueLoansValue->setFont(font4);
-        overdueLoansValue->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        overdueCardLayout->addWidget(overdueLoansValue);
-
-        overdueLoansLabel = new QLabel(overdueStatsCard);
-        overdueLoansLabel->setObjectName("overdueLoansLabel");
-        overdueLoansLabel->setFont(font);
-        overdueLoansLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        overdueCardLayout->addWidget(overdueLoansLabel);
-
-
-        simpleStatsLayout->addWidget(overdueStatsCard, 1, 1, 1, 1);
-
-
-        statsTabLayout->addWidget(simpleStatsFrame);
-
-        statisticsSummaryLabel = new QLabel(statsTab);
-        statisticsSummaryLabel->setObjectName("statisticsSummaryLabel");
-        QFont font5;
-        font5.setPointSize(12);
-        font5.setItalic(true);
-        statisticsSummaryLabel->setFont(font5);
-        statisticsSummaryLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-        statisticsSummaryLabel->setWordWrap(true);
-
-        statsTabLayout->addWidget(statisticsSummaryLabel);
-
-        chartsFrame = new QFrame(statsTab);
-        chartsFrame->setObjectName("chartsFrame");
-        chartsFrame->setFrameShape(QFrame::Shape::StyledPanel);
-        chartsFrame->setFrameShadow(QFrame::Shadow::Raised);
-        chartsLayout = new QHBoxLayout(chartsFrame);
-        chartsLayout->setSpacing(12);
-        chartsLayout->setObjectName("chartsLayout");
-        summaryStatsPanel = new QFrame(chartsFrame);
-        summaryStatsPanel->setObjectName("summaryStatsPanel");
-        summaryStatsPanel->setMinimumSize(QSize(280, 0));
-        summaryStatsPanel->setMaximumSize(QSize(360, 16777215));
-        summaryStatsLayout = new QVBoxLayout(summaryStatsPanel);
-        summaryStatsLayout->setSpacing(12);
-        summaryStatsLayout->setObjectName("summaryStatsLayout");
-        summaryStatsLayout->setContentsMargins(12, 12, 12, 12);
-        summaryStatsTitle = new QLabel(summaryStatsPanel);
-        summaryStatsTitle->setObjectName("summaryStatsTitle");
-        QFont font6;
-        font6.setPointSize(15);
-        font6.setBold(true);
-        summaryStatsTitle->setFont(font6);
-        summaryStatsTitle->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        summaryStatsLayout->addWidget(summaryStatsTitle);
-
-        summaryStatsGrid = new QGridLayout();
-        summaryStatsGrid->setObjectName("summaryStatsGrid");
-        summaryStatsGrid->setHorizontalSpacing(10);
-        summaryStatsGrid->setVerticalSpacing(8);
-        summaryBorrowedLabel = new QLabel(summaryStatsPanel);
-        summaryBorrowedLabel->setObjectName("summaryBorrowedLabel");
-        QFont font7;
-        font7.setPointSize(13);
-        font7.setBold(true);
-        summaryBorrowedLabel->setFont(font7);
-
-        summaryStatsGrid->addWidget(summaryBorrowedLabel, 0, 0, 1, 1);
-
-        summaryBorrowedValue = new QLabel(summaryStatsPanel);
-        summaryBorrowedValue->setObjectName("summaryBorrowedValue");
-        summaryBorrowedValue->setFont(font2);
-
-        summaryStatsGrid->addWidget(summaryBorrowedValue, 0, 1, 1, 1);
-
-        summaryReturnedLabel = new QLabel(summaryStatsPanel);
-        summaryReturnedLabel->setObjectName("summaryReturnedLabel");
-        summaryReturnedLabel->setFont(font7);
-
-        summaryStatsGrid->addWidget(summaryReturnedLabel, 1, 0, 1, 1);
-
-        summaryReturnedValue = new QLabel(summaryStatsPanel);
-        summaryReturnedValue->setObjectName("summaryReturnedValue");
-        summaryReturnedValue->setFont(font2);
-
-        summaryStatsGrid->addWidget(summaryReturnedValue, 1, 1, 1, 1);
-
-        summaryOverdueLabel = new QLabel(summaryStatsPanel);
-        summaryOverdueLabel->setObjectName("summaryOverdueLabel");
-        summaryOverdueLabel->setFont(font7);
-
-        summaryStatsGrid->addWidget(summaryOverdueLabel, 2, 0, 1, 1);
-
-        summaryOverdueValue = new QLabel(summaryStatsPanel);
-        summaryOverdueValue->setObjectName("summaryOverdueValue");
-        summaryOverdueValue->setFont(font2);
-
-        summaryStatsGrid->addWidget(summaryOverdueValue, 2, 1, 1, 1);
-
-        summaryFinesLabel = new QLabel(summaryStatsPanel);
-        summaryFinesLabel->setObjectName("summaryFinesLabel");
-        summaryFinesLabel->setFont(font7);
-
-        summaryStatsGrid->addWidget(summaryFinesLabel, 3, 0, 1, 1);
-
-        summaryFinesValue = new QLabel(summaryStatsPanel);
-        summaryFinesValue->setObjectName("summaryFinesValue");
-        summaryFinesValue->setFont(font2);
-
-        summaryStatsGrid->addWidget(summaryFinesValue, 3, 1, 1, 1);
-
-
-        summaryStatsLayout->addLayout(summaryStatsGrid);
-
-        summaryStatsNote = new QLabel(summaryStatsPanel);
-        summaryStatsNote->setObjectName("summaryStatsNote");
-        QFont font8;
-        font8.setPointSize(11);
-        summaryStatsNote->setFont(font8);
-        summaryStatsNote->setWordWrap(true);
-
-        summaryStatsLayout->addWidget(summaryStatsNote);
-
-
-        chartsLayout->addWidget(summaryStatsPanel);
-
-        rightStatsPanel = new QFrame(chartsFrame);
-        rightStatsPanel->setObjectName("rightStatsPanel");
-        rightStatsPanel->setMinimumSize(QSize(280, 0));
-        rightStatsPanel->setMaximumSize(QSize(350, 16777215));
-        rightStatsLayout = new QVBoxLayout(rightStatsPanel);
-        rightStatsLayout->setSpacing(12);
-        rightStatsLayout->setObjectName("rightStatsLayout");
-        rightStatsLayout->setContentsMargins(-1, 0, 0, 0);
-        finesStatsCard = new QFrame(rightStatsPanel);
-        finesStatsCard->setObjectName("finesStatsCard");
-        finesStatsCard->setFrameShape(QFrame::Shape::StyledPanel);
-        finesCardLayout = new QVBoxLayout(finesStatsCard);
-        finesCardLayout->setSpacing(8);
-        finesCardLayout->setObjectName("finesCardLayout");
-        finesIcon = new QLabel(finesStatsCard);
-        finesIcon->setObjectName("finesIcon");
-        QFont font9;
-        font9.setPointSize(24);
-        finesIcon->setFont(font9);
-        finesIcon->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        finesCardLayout->addWidget(finesIcon);
-
-        totalFinesValue = new QLabel(finesStatsCard);
+        totalFinesCard = new QGroupBox(statsScrollContent);
+        totalFinesCard->setObjectName("totalFinesCard");
+        totalFinesCard->setMinimumSize(QSize(150, 90));
+        totalFinesCard->setMaximumSize(QSize(16777215, 90));
+        totalFinesValue = new QLabel(totalFinesCard);
         totalFinesValue->setObjectName("totalFinesValue");
-        totalFinesValue->setFont(font2);
-        totalFinesValue->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        totalFinesValue->setGeometry(QRect(10, 30, 130, 40));
+        totalFinesValue->setAlignment(Qt::AlignCenter);
+        totalFinesValue->setFont(font3);
 
-        finesCardLayout->addWidget(totalFinesValue);
-
-        finesLabel = new QLabel(finesStatsCard);
-        finesLabel->setObjectName("finesLabel");
-        QFont font10;
-        font10.setPointSize(12);
-        font10.setBold(true);
-        finesLabel->setFont(font10);
-        finesLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
-
-        finesCardLayout->addWidget(finesLabel);
+        statsCardsLayout->addWidget(totalFinesCard);
 
 
-        rightStatsLayout->addWidget(finesStatsCard);
+        statsTabLayout->addLayout(statsCardsLayout);
+
+        chartsRowLayout = new QHBoxLayout();
+        chartsRowLayout->setSpacing(12);
+        chartsRowLayout->setObjectName("chartsRowLayout");
+        topBooksFrame = new QFrame(statsScrollContent);
+        topBooksFrame->setObjectName("topBooksFrame");
+        QSizePolicy sizePolicy3(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
+        sizePolicy3.setHorizontalStretch(1);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(topBooksFrame->sizePolicy().hasHeightForWidth());
+        topBooksFrame->setSizePolicy(sizePolicy3);
+        topBooksFrame->setFrameShape(QFrame::StyledPanel);
+        topBooksFrameLayout = new QVBoxLayout(topBooksFrame);
+        topBooksFrameLayout->setObjectName("topBooksFrameLayout");
+        topBooksTitle = new QLabel(topBooksFrame);
+        topBooksTitle->setObjectName("topBooksTitle");
+        QFont font4;
+        font4.setPointSize(10);
+        font4.setBold(true);
+        topBooksTitle->setFont(font4);
+
+        topBooksFrameLayout->addWidget(topBooksTitle);
+
+        topBooksChart = new StatsChart(topBooksFrame);
+        topBooksChart->setObjectName("topBooksChart");
+        topBooksChart->setMinimumSize(QSize(200, 160));
+        topBooksChart->setMaximumSize(QSize(16777215, 160));
+
+        topBooksFrameLayout->addWidget(topBooksChart);
 
 
-        chartsLayout->addWidget(rightStatsPanel);
+        chartsRowLayout->addWidget(topBooksFrame);
+
+        topBooksListFrame = new QFrame(statsScrollContent);
+        topBooksListFrame->setObjectName("topBooksListFrame");
+        sizePolicy3.setHeightForWidth(topBooksListFrame->sizePolicy().hasHeightForWidth());
+        topBooksListFrame->setSizePolicy(sizePolicy3);
+        topBooksListFrame->setFrameShape(QFrame::StyledPanel);
+        topBooksListLayout = new QVBoxLayout(topBooksListFrame);
+        topBooksListLayout->setObjectName("topBooksListLayout");
+        topBooksListTitle = new QLabel(topBooksListFrame);
+        topBooksListTitle->setObjectName("topBooksListTitle");
+        topBooksListTitle->setFont(font4);
+
+        topBooksListLayout->addWidget(topBooksListTitle);
+
+        topBooksList = new QListWidget(topBooksListFrame);
+        topBooksList->setObjectName("topBooksList");
+        topBooksList->setMinimumSize(QSize(200, 160));
+        topBooksList->setMaximumSize(QSize(16777215, 160));
+
+        topBooksListLayout->addWidget(topBooksList);
 
 
-        statsTabLayout->addWidget(chartsFrame);
+        chartsRowLayout->addWidget(topBooksListFrame);
 
-        statsVerticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        statsTabLayout->addItem(statsVerticalSpacer);
+        statsTabLayout->addLayout(chartsRowLayout);
+
+        bottomRowLayout = new QHBoxLayout();
+        bottomRowLayout->setSpacing(12);
+        bottomRowLayout->setObjectName("bottomRowLayout");
+        warningColumn = new QVBoxLayout();
+        warningColumn->setSpacing(10);
+        warningColumn->setObjectName("warningColumn");
+        overdueWarningFrame = new QFrame(statsScrollContent);
+        overdueWarningFrame->setObjectName("overdueWarningFrame");
+        sizePolicy3.setHeightForWidth(overdueWarningFrame->sizePolicy().hasHeightForWidth());
+        overdueWarningFrame->setSizePolicy(sizePolicy3);
+        overdueWarningFrame->setFrameShape(QFrame::StyledPanel);
+        vboxLayout = new QVBoxLayout(overdueWarningFrame);
+        vboxLayout->setObjectName("vboxLayout");
+        overdueWarningTitle = new QLabel(overdueWarningFrame);
+        overdueWarningTitle->setObjectName("overdueWarningTitle");
+        overdueWarningTitle->setFont(font4);
+
+        vboxLayout->addWidget(overdueWarningTitle);
+
+        overdueCount = new QLabel(overdueWarningFrame);
+        overdueCount->setObjectName("overdueCount");
+        overdueCount->setFont(font);
+
+        vboxLayout->addWidget(overdueCount);
+
+
+        warningColumn->addWidget(overdueWarningFrame);
+
+        monthlyFinesFrame = new QFrame(statsScrollContent);
+        monthlyFinesFrame->setObjectName("monthlyFinesFrame");
+        sizePolicy3.setHeightForWidth(monthlyFinesFrame->sizePolicy().hasHeightForWidth());
+        monthlyFinesFrame->setSizePolicy(sizePolicy3);
+        monthlyFinesFrame->setFrameShape(QFrame::StyledPanel);
+        vboxLayout1 = new QVBoxLayout(monthlyFinesFrame);
+        vboxLayout1->setObjectName("vboxLayout1");
+        monthlyFinesTitle = new QLabel(monthlyFinesFrame);
+        monthlyFinesTitle->setObjectName("monthlyFinesTitle");
+        monthlyFinesTitle->setFont(font4);
+
+        vboxLayout1->addWidget(monthlyFinesTitle);
+
+        monthlyFinesValue = new QLabel(monthlyFinesFrame);
+        monthlyFinesValue->setObjectName("monthlyFinesValue");
+        monthlyFinesValue->setFont(font);
+
+        vboxLayout1->addWidget(monthlyFinesValue);
+
+        monthlyFinesSubtitle = new QLabel(monthlyFinesFrame);
+        monthlyFinesSubtitle->setObjectName("monthlyFinesSubtitle");
+
+        vboxLayout1->addWidget(monthlyFinesSubtitle);
+
+
+        warningColumn->addWidget(monthlyFinesFrame);
+
+
+        bottomRowLayout->addLayout(warningColumn);
+
+        revenueChartFrame = new QFrame(statsScrollContent);
+        revenueChartFrame->setObjectName("revenueChartFrame");
+        sizePolicy3.setHeightForWidth(revenueChartFrame->sizePolicy().hasHeightForWidth());
+        revenueChartFrame->setSizePolicy(sizePolicy3);
+        revenueChartFrame->setMaximumSize(QSize(16777215, 200));
+        revenueChartFrame->setFrameShape(QFrame::StyledPanel);
+        vboxLayout2 = new QVBoxLayout(revenueChartFrame);
+        vboxLayout2->setObjectName("vboxLayout2");
+        revenueChartTitle = new QLabel(revenueChartFrame);
+        revenueChartTitle->setObjectName("revenueChartTitle");
+        revenueChartTitle->setFont(font4);
+
+        vboxLayout2->addWidget(revenueChartTitle);
+
+        revenueChart = new StatsChart(revenueChartFrame);
+        revenueChart->setObjectName("revenueChart");
+        revenueChart->setMinimumSize(QSize(100, 140));
+        revenueChart->setMaximumSize(QSize(16777215, 140));
+
+        vboxLayout2->addWidget(revenueChart);
+
+
+        bottomRowLayout->addWidget(revenueChartFrame);
+
+        activeReadersFrame = new QFrame(statsScrollContent);
+        activeReadersFrame->setObjectName("activeReadersFrame");
+        sizePolicy3.setHeightForWidth(activeReadersFrame->sizePolicy().hasHeightForWidth());
+        activeReadersFrame->setSizePolicy(sizePolicy3);
+        activeReadersFrame->setMaximumSize(QSize(16777215, 200));
+        activeReadersFrame->setFrameShape(QFrame::StyledPanel);
+        vboxLayout3 = new QVBoxLayout(activeReadersFrame);
+        vboxLayout3->setObjectName("vboxLayout3");
+        activeReadersTitle = new QLabel(activeReadersFrame);
+        activeReadersTitle->setObjectName("activeReadersTitle");
+        activeReadersTitle->setFont(font4);
+
+        vboxLayout3->addWidget(activeReadersTitle);
+
+        activeReadersList = new QListWidget(activeReadersFrame);
+        activeReadersList->setObjectName("activeReadersList");
+        activeReadersList->setMinimumSize(QSize(100, 140));
+        activeReadersList->setMaximumSize(QSize(16777215, 140));
+
+        vboxLayout3->addWidget(activeReadersList);
+
+
+        bottomRowLayout->addWidget(activeReadersFrame);
+
+
+        statsTabLayout->addLayout(bottomRowLayout);
+
+        statsScrollArea->setWidget(statsScrollContent);
+
+        statsTabOuterLayout->addWidget(statsScrollArea);
 
         tabs->addTab(statsTab, QString());
         staffsTab = new QWidget();
@@ -1148,137 +1119,45 @@ public:
         approveReportButton->setText(QCoreApplication::translate("MainWindow", "Duyet", nullptr));
         rejectReportButton->setText(QCoreApplication::translate("MainWindow", "Tu choi", nullptr));
         tabs->setTabText(tabs->indexOf(reportsTab), QCoreApplication::translate("MainWindow", "Bao cao", nullptr));
-        statsTitle->setText(QCoreApplication::translate("MainWindow", "\360\237\223\212 Th\341\273\221ng k\303\252 t\341\273\225ng quan", nullptr));
-        statsTitle->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937; margin-bottom: 10px;", nullptr));
-        simpleStatsFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#simpleStatsFrame {\n"
-"    background: white;\n"
-"    border: 2px solid #e5e7eb;\n"
-"    border-radius: 12px;\n"
-"    padding: 15px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #374151;\n"
-"    background: transparent;\n"
-"    border: none;\n"
-"}", nullptr));
-        booksStatsCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#booksStatsCard {\n"
-"    background: #dbeafe;\n"
-"    border: 1px solid #93c5fd;\n"
-"    border-radius: 6px;\n"
-"    padding: 8px;\n"
-"    min-height: 65px;\n"
-"    max-height: 75px;\n"
-"    min-width: 120px;\n"
-"    max-width: 180px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #1e40af;\n"
-"    font-size: 11px;\n"
-"}", nullptr));
-        booksIcon->setText(QCoreApplication::translate("MainWindow", "\360\237\223\232", nullptr));
+        statsFilterGroup->setTitle(QCoreApplication::translate("MainWindow", "Bo loc", nullptr));
+        timePeriodLabel->setText(QCoreApplication::translate("MainWindow", "Thoi gian:", nullptr));
+        timePeriodCombo->setItemText(0, QCoreApplication::translate("MainWindow", "Tuan nay", nullptr));
+        timePeriodCombo->setItemText(1, QCoreApplication::translate("MainWindow", "Thang nay", nullptr));
+        timePeriodCombo->setItemText(2, QCoreApplication::translate("MainWindow", "Nam nay", nullptr));
+        timePeriodCombo->setItemText(3, QCoreApplication::translate("MainWindow", "Tat ca", nullptr));
+
+        applyFilterButton->setText(QCoreApplication::translate("MainWindow", "Ap dung", nullptr));
+        totalBooksCard->setTitle(QCoreApplication::translate("MainWindow", "Tong So Sach", nullptr));
+        totalBooksCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QGroupBox { background: white; border: 2px solid #3b82f6; border-radius: 8px; margin-top: 10px; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }", nullptr));
         totalBooksValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        totalBooksLabel->setText(QCoreApplication::translate("MainWindow", "T\341\273\225ng s\341\273\221 s\303\241ch", nullptr));
-        readersStatsCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#readersStatsCard {\n"
-"    background: #dcfce7;\n"
-"    border: 1px solid #86efac;\n"
-"    border-radius: 6px;\n"
-"    padding: 8px;\n"
-"    min-height: 65px;\n"
-"    max-height: 75px;\n"
-"    min-width: 120px;\n"
-"    max-width: 180px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #166534;\n"
-"    font-size: 11px;\n"
-"}", nullptr));
-        readersIcon->setText(QCoreApplication::translate("MainWindow", "\360\237\221\245", nullptr));
+        totalReadersCard->setTitle(QCoreApplication::translate("MainWindow", "Tong Doc Gia", nullptr));
+        totalReadersCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QGroupBox { background: white; border: 2px solid #10b981; border-radius: 8px; margin-top: 10px; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }", nullptr));
         totalReadersValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        totalReadersLabel->setText(QCoreApplication::translate("MainWindow", "T\341\273\225ng b\341\272\241n \304\221\341\273\215c", nullptr));
-        loansStatsCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#loansStatsCard {\n"
-"    background: #fef3c7;\n"
-"    border: 1px solid #fcd34d;\n"
-"    border-radius: 6px;\n"
-"    padding: 8px;\n"
-"    min-height: 65px;\n"
-"    max-height: 75px;\n"
-"    min-width: 120px;\n"
-"    max-width: 180px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #92400e;\n"
-"    font-size: 11px;\n"
-"}", nullptr));
-        loansIcon->setText(QCoreApplication::translate("MainWindow", "\360\237\223\213", nullptr));
+        totalLoansCard->setTitle(QCoreApplication::translate("MainWindow", "Tong Phieu Muon", nullptr));
+        totalLoansCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QGroupBox { background: white; border: 2px solid #f59e0b; border-radius: 8px; margin-top: 10px; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }", nullptr));
         totalLoansValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        totalLoansLabel->setText(QCoreApplication::translate("MainWindow", "T\341\273\225ng phi\341\272\277u m\306\260\341\273\243n", nullptr));
-        overdueStatsCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#overdueStatsCard {\n"
-"    background: #fee2e2;\n"
-"    border: 1px solid #fca5a5;\n"
-"    border-radius: 6px;\n"
-"    padding: 8px;\n"
-"    min-height: 65px;\n"
-"    max-height: 75px;\n"
-"    min-width: 120px;\n"
-"    max-width: 180px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #dc2626;\n"
-"    font-size: 11px;\n"
-"}", nullptr));
-        overdueIcon->setText(QCoreApplication::translate("MainWindow", "\342\232\240\357\270\217", nullptr));
-        overdueLoansValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        overdueLoansLabel->setText(QCoreApplication::translate("MainWindow", "Phi\341\272\277u qu\303\241 h\341\272\241n", nullptr));
-        statisticsSummaryLabel->setText(QCoreApplication::translate("MainWindow", "Th\341\273\221ng k\303\252 s\341\272\275 \304\221\306\260\341\273\243c c\341\272\255p nh\341\272\255t t\341\273\261 \304\221\341\273\231ng khi c\303\263 d\341\273\257 li\341\273\207u m\341\273\233i", nullptr));
-        statisticsSummaryLabel->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #6b7280; text-align: center;", nullptr));
-        chartsFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#chartsFrame {\n"
-"    background: #ffffff;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 12px;\n"
-"    padding: 16px;\n"
-"}", nullptr));
-        summaryStatsPanel->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#summaryStatsPanel {\n"
-"    background: #f8fafc;\n"
-"    border: 1px solid #e2e8f0;\n"
-"    border-radius: 12px;\n"
-"    padding: 16px;\n"
-"}", nullptr));
-        summaryStatsTitle->setText(QCoreApplication::translate("MainWindow", "\342\232\241 S\341\273\221 li\341\273\207u theo k\341\273\263", nullptr));
-        summaryStatsTitle->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937;", nullptr));
-        summaryBorrowedLabel->setText(QCoreApplication::translate("MainWindow", "\360\237\223\230 L\306\260\341\273\243t m\306\260\341\273\243n:", nullptr));
-        summaryBorrowedLabel->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1d4ed8;", nullptr));
-        summaryBorrowedValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        summaryBorrowedValue->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937;", nullptr));
-        summaryReturnedLabel->setText(QCoreApplication::translate("MainWindow", "\360\237\223\227 L\306\260\341\273\243t tr\341\272\243:", nullptr));
-        summaryReturnedLabel->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #047857;", nullptr));
-        summaryReturnedValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        summaryReturnedValue->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937;", nullptr));
-        summaryOverdueLabel->setText(QCoreApplication::translate("MainWindow", "\342\217\260 Phi\341\272\277u qu\303\241 h\341\272\241n:", nullptr));
-        summaryOverdueLabel->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #b91c1c;", nullptr));
-        summaryOverdueValue->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
-        summaryOverdueValue->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937;", nullptr));
-        summaryFinesLabel->setText(QCoreApplication::translate("MainWindow", "\360\237\222\265 Ti\341\273\201n ph\341\272\241t:", nullptr));
-        summaryFinesLabel->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #b45309;", nullptr));
-        summaryFinesValue->setText(QCoreApplication::translate("MainWindow", "0 VND", nullptr));
-        summaryFinesValue->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #1f2937;", nullptr));
-        summaryStatsNote->setText(QCoreApplication::translate("MainWindow", "Ch\341\273\215n kho\341\272\243ng th\341\273\235i gian \304\221\341\273\203 xem s\341\273\221 li\341\273\207u m\306\260\341\273\243n tr\341\272\243 v\303\240 ti\341\273\201n ph\341\272\241t.", nullptr));
-        summaryStatsNote->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #475569;", nullptr));
-        rightStatsPanel->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#rightStatsPanel {\n"
-"    background: transparent;\n"
-"    border: none;\n"
-"}", nullptr));
-        finesStatsCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame#finesStatsCard {\n"
-"    background: #fef3c7;\n"
-"    border: 2px solid #fbbf24;\n"
-"    border-radius: 12px;\n"
-"    padding: 15px;\n"
-"}\n"
-"QLabel {\n"
-"    color: #92400e;\n"
-"}", nullptr));
-        finesIcon->setText(QCoreApplication::translate("MainWindow", "\360\237\222\260", nullptr));
-        totalFinesValue->setText(QCoreApplication::translate("MainWindow", "0 VN\304\220", nullptr));
-        finesLabel->setText(QCoreApplication::translate("MainWindow", "T\341\273\225ng ti\341\273\201n ph\341\272\241t", nullptr));
+        totalFinesCard->setTitle(QCoreApplication::translate("MainWindow", "Tong Tien Phat", nullptr));
+        totalFinesCard->setStyleSheet(QCoreApplication::translate("MainWindow", "QGroupBox { background: white; border: 2px solid #ef4444; border-radius: 8px; margin-top: 10px; font-weight: bold; } QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }", nullptr));
+        totalFinesValue->setText(QCoreApplication::translate("MainWindow", "0\304\221", nullptr));
+        topBooksFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }", nullptr));
+        topBooksTitle->setText(QCoreApplication::translate("MainWindow", "Luot thue theo the loai", nullptr));
+        topBooksListFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }", nullptr));
+        topBooksListTitle->setText(QCoreApplication::translate("MainWindow", "Sach muon nhieu nhat", nullptr));
+        overdueWarningFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; }", nullptr));
+        overdueWarningTitle->setText(QCoreApplication::translate("MainWindow", "\342\232\240 Tre han", nullptr));
+        overdueWarningTitle->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #dc2626;", nullptr));
+        overdueCount->setText(QCoreApplication::translate("MainWindow", "0 sach dang tre", nullptr));
+        overdueCount->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #991b1b;", nullptr));
+        monthlyFinesFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }", nullptr));
+        monthlyFinesTitle->setText(QCoreApplication::translate("MainWindow", "Tien phat thang nay", nullptr));
+        monthlyFinesValue->setText(QCoreApplication::translate("MainWindow", "0d", nullptr));
+        monthlyFinesValue->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #111827;", nullptr));
+        monthlyFinesSubtitle->setText(QCoreApplication::translate("MainWindow", "Thang nay", nullptr));
+        monthlyFinesSubtitle->setStyleSheet(QCoreApplication::translate("MainWindow", "color: #6b7280; font-size: 10px;", nullptr));
+        revenueChartFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }", nullptr));
+        revenueChartTitle->setText(QCoreApplication::translate("MainWindow", "Doanh thu", nullptr));
+        activeReadersFrame->setStyleSheet(QCoreApplication::translate("MainWindow", "QFrame { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; }", nullptr));
+        activeReadersTitle->setText(QCoreApplication::translate("MainWindow", "Hoat dong ban doc", nullptr));
         tabs->setTabText(tabs->indexOf(statsTab), QCoreApplication::translate("MainWindow", "Thong ke", nullptr));
         staffsFilterGroup->setTitle(QCoreApplication::translate("MainWindow", "Bo loc", nullptr));
         staffSearchEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Tim nhan vien theo ten, ma nhan vien hoac chuc vu", nullptr));

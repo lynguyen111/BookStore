@@ -1,5 +1,5 @@
 #include "ui/LoginDialog.h"
-#include "MainWindow.h"
+#include "ui/MainWindow.h"
 #include "datafile/DataPaths.h"
 #include "service/AccountService.h"
 #include "QtBridge.h"

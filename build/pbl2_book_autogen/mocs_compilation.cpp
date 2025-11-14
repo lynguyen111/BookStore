@@ -9,3 +9,5 @@
 #include "UYX5XTB5RZ/moc_ReportDetailsDialog.cpp"
 #include "UYX5XTB5RZ/moc_ReportRequestDialog.cpp"
 #include "UYX5XTB5RZ/moc_StaffDialog.cpp"
+#include "UYX5XTB5RZ/moc_StatsChart.cpp"
+#include "UYX5XTB5RZ/moc_StatsWidget.cpp"

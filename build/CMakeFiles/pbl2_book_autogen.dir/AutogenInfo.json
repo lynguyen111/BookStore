@@ -702,6 +702,12 @@
 			"MU",
 			"UYX5XTB5RZ/moc_StatsChart.cpp",
 			null
+		],
+		[
+			"/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsWidget.h",
+			"MU",
+			"UYX5XTB5RZ/moc_StatsWidget.cpp",
+			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -988,6 +994,11 @@
 		],
 		[
 			"/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsChart.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/nguyenly/eclipse-workspace/Pbl2_book_patched_binaware/Pbl2_book/ui/StatsWidget.cpp",
 			"MU",
 			null
 		]

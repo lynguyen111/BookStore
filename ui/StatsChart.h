@@ -8,6 +8,8 @@
 namespace pbl2::ui {
 
 class StatsChart : public QWidget {
+    Q_OBJECT
+    
 public:
     enum class Mode { Bar, Line, StackedBar };
 

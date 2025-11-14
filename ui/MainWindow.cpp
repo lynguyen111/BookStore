@@ -33,12 +33,15 @@
 #include <QDir>
 #include <QMenu>
 #include <QResizeEvent>
+#include <QSet>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 #include "core/IdGenerator.h"
 #include "core/custom/DynamicArray.h"
 #include "QtBridge.h"
 #include "BookStatus.h"
-#include "ui_MainWindow.h"
 #include "MainWindow.h"
+#include "ui_MainWindow.h"
 #include <QToolButton>
 #include "AccountDialog.h"
 #include "BookDialog.h"
@@ -47,6 +50,7 @@
 #include "StaffDialog.h"
 #include "ReportRequestDialog.h"
 #include "ReportDetailsDialog.h"
+#include "StatsWidget.h"
 
 using namespace std;  // project-wide request
 using namespace pbl2;
@@ -572,50 +576,6 @@ void MainWindow::setupUi() {
     accountsList = ui->accountsList;
     navigationList = ui->navigationList;
     refreshButton = ui->refreshButton;
-    statisticsSummaryLabel = ui->statisticsSummaryLabel;
-    
-    // Simple stats cards
-    totalBooksValue = ui->totalBooksValue;
-    totalReadersValue = ui->totalReadersValue;
-    totalLoansValue = ui->totalLoansValue;
-    overdueLoansValue = ui->overdueLoansValue;
-    totalFinesValue = ui->totalFinesValue;
-    summaryBorrowedValue = ui->summaryBorrowedValue;
-    summaryReturnedValue = ui->summaryReturnedValue;
-    summaryOverdueValue = ui->summaryOverdueValue;
-    summaryFinesValue = ui->summaryFinesValue;
-    
-    // Debug: Set initial values to test widgets
-    if (totalBooksValue) {
-        totalBooksValue->setText("158");
-        totalBooksValue->setVisible(true);
-        totalBooksValue->show();
-        totalBooksValue->raise();  // Bring to front
-    }
-    if (totalReadersValue) {
-        totalReadersValue->setText("24");
-        totalReadersValue->setVisible(true);
-        totalReadersValue->show();
-        totalReadersValue->raise();
-    }
-    if (totalLoansValue) {
-        totalLoansValue->setText("86");
-        totalLoansValue->setVisible(true);
-        totalLoansValue->show();
-        totalLoansValue->raise();
-    }
-    if (overdueLoansValue) {
-        overdueLoansValue->setText("5");
-        overdueLoansValue->setVisible(true);
-        overdueLoansValue->show();
-        overdueLoansValue->raise();
-    }
-    if (totalFinesValue) {
-        totalFinesValue->setText("125,000 VND");
-        totalFinesValue->setVisible(true);
-        totalFinesValue->show();
-        totalFinesValue->raise();
-    }
 
     auto ensureSummaryVisible = [](QLabel *label, const QString &value) {
         if (!label) return;
@@ -710,7 +670,7 @@ void MainWindow::setupUi() {
                 "}");
         }
         tabs->setStyleSheet(QString());
-        connect(tabs, &QTabWidget::currentChanged, this, [this](int index) {
+        connect(tabs, &QTabWidget::currentChanged, [this](int index) {
             if (navigationList && navigationList->currentRow() != index) {
                 QSignalBlocker blocker(navigationList);
                 navigationList->setCurrentRow(index);
@@ -754,15 +714,15 @@ void MainWindow::setupUi() {
     }
     if (ui->refreshButton) {
         ui->refreshButton->setText(tr("Tai lai"));
-        connect(ui->refreshButton, &QPushButton::clicked, this, [this]() {
-            statusBar()->showMessage(tr("Dang tai lai..."));
-            reloadData();
-            statusBar()->showMessage(tr("Da tai lai du lieu."), 2000);
+        connect(ui->refreshButton, &QPushButton::clicked, [this]() {
+            this->statusBar()->showMessage(tr("Dang tai lai..."));
+            this->reloadData();
+            this->statusBar()->showMessage(tr("Da tai lai du lieu."), 2000);
         });
     }
     if (ui->logoutButton) {
         ui->logoutButton->setText(tr("Dang xuat"));
-        connect(ui->logoutButton, &QPushButton::clicked, this, &MainWindow::handleLogout);
+        connect(ui->logoutButton, &QPushButton::clicked, [this]() { handleLogout(); });
     }
 
     userInfoLabel = new QLabel(this);
@@ -781,7 +741,7 @@ void MainWindow::setupUi() {
     navToggleButton->setToolTip(tr("Ẩn/Hiện thanh điều hướng"));
     navToggleButton->setFixedHeight(24);
     navToggleButton->setCursor(Qt::PointingHandCursor);
-    connect(navToggleButton, &QPushButton::clicked, this, [this]() {
+    connect(navToggleButton, &QPushButton::clicked, [this]() {
         if (!navigationList) return;
         if (navCollapsed) {
             setNavigationCollapsed(false, true);
@@ -817,7 +777,7 @@ void MainWindow::setupUi() {
             "QPushButton { border-radius:14px; background: rgba(0,0,0,0.06); }"
             "QPushButton::hover { background: rgba(0,0,0,0.12); }"
         );
-        connect(navRailButton, &QPushButton::clicked, this, &MainWindow::showNavigationPopupMenu);
+        connect(navRailButton, &QPushButton::clicked, [this]() { showNavigationPopupMenu(); });
 
         setNavigationCollapsed(false, true);
         repositionNavRailButton();
@@ -902,20 +862,20 @@ void MainWindow::configureBooksTab() {
         connect(bookStatusFilter, &QComboBox::currentTextChanged, this, &MainWindow::applyBookFilter);
     }
     if (ui->bookFilterButton) {
-        connect(ui->bookFilterButton, &QPushButton::clicked, this, &MainWindow::applyBookFilter);
+        connect(ui->bookFilterButton, &QPushButton::clicked, [this]() { applyBookFilter(); });
     }
 
     if (ui->addBookButton) {
         ui->addBookButton->setVisible(adminRole);
-        connect(ui->addBookButton, &QPushButton::clicked, this, &MainWindow::handleAddBook);
+        connect(ui->addBookButton, &QPushButton::clicked, [this]() { handleAddBook(); });
     }
     if (ui->editBookButton) {
         ui->editBookButton->setVisible(adminRole);
-        connect(ui->editBookButton, &QPushButton::clicked, this, &MainWindow::handleEditBook);
+        connect(ui->editBookButton, &QPushButton::clicked, [this]() { handleEditBook(); });
     }
     if (ui->deleteBookButton) {
         ui->deleteBookButton->setVisible(adminRole);
-        connect(ui->deleteBookButton, &QPushButton::clicked, this, &MainWindow::handleDeleteBook);
+        connect(ui->deleteBookButton, &QPushButton::clicked, [this]() { handleDeleteBook(); });
     }
     if (ui->booksActionsGroup) {
         ui->booksActionsGroup->setVisible(adminRole);
@@ -943,24 +903,24 @@ void MainWindow::configureReadersTab() {
         connect(readerStatusFilter, &QComboBox::currentTextChanged, this, &MainWindow::applyReaderFilter);
     }
     if (ui->readerFilterButton) {
-        connect(ui->readerFilterButton, &QPushButton::clicked, this, &MainWindow::applyReaderFilter);
+        connect(ui->readerFilterButton, &QPushButton::clicked, [this]() { applyReaderFilter(); });
     }
 
     if (ui->addReaderButton) {
         ui->addReaderButton->setVisible(staffRole);
-        connect(ui->addReaderButton, &QPushButton::clicked, this, &MainWindow::handleAddReader);
+        connect(ui->addReaderButton, &QPushButton::clicked, [this]() { handleAddReader(); });
     }
     if (ui->editReaderButton) {
         ui->editReaderButton->setVisible(staffRole);
-        connect(ui->editReaderButton, &QPushButton::clicked, this, &MainWindow::handleEditReader);
+        connect(ui->editReaderButton, &QPushButton::clicked, [this]() { handleEditReader(); });
     }
     if (ui->toggleReaderStatusButton) {
         ui->toggleReaderStatusButton->setVisible(staffRole);
-        connect(ui->toggleReaderStatusButton, &QPushButton::clicked, this, &MainWindow::handleToggleReaderActive);
+        connect(ui->toggleReaderStatusButton, &QPushButton::clicked, [this]() { handleToggleReaderActive(); });
     }
     if (ui->deleteReaderButton) {
         ui->deleteReaderButton->setVisible(staffRole);
-        connect(ui->deleteReaderButton, &QPushButton::clicked, this, &MainWindow::handleDeleteReader);
+        connect(ui->deleteReaderButton, &QPushButton::clicked, [this]() { handleDeleteReader(); });
     }
     if (ui->readersActionsGroup) {
         ui->readersActionsGroup->setVisible(staffRole);
@@ -984,32 +944,32 @@ void MainWindow::configureLoansTab() {
         connect(loanSearchEdit, &QLineEdit::textChanged, this, &MainWindow::applyLoanFilter);
     }
     if (ui->loanFilterButton) {
-        connect(ui->loanFilterButton, &QPushButton::clicked, this, &MainWindow::applyLoanFilter);
+        connect(ui->loanFilterButton, &QPushButton::clicked, [this]() { applyLoanFilter(); });
     }
 
     if (ui->newLoanButton) {
         ui->newLoanButton->setVisible(staffRole);
-        connect(ui->newLoanButton, &QPushButton::clicked, this, &MainWindow::handleNewLoan);
+        connect(ui->newLoanButton, &QPushButton::clicked, [this]() { handleNewLoan(); });
     }
     if (ui->returnLoanButton) {
         ui->returnLoanButton->setVisible(staffRole);
-        connect(ui->returnLoanButton, &QPushButton::clicked, this, &MainWindow::handleMarkReturned);
+        connect(ui->returnLoanButton, &QPushButton::clicked, [this]() { handleMarkReturned(); });
     }
     if (ui->extendLoanButton) {
         ui->extendLoanButton->setVisible(staffRole);
-        connect(ui->extendLoanButton, &QPushButton::clicked, this, &MainWindow::handleExtendLoan);
+        connect(ui->extendLoanButton, &QPushButton::clicked, [this]() { handleExtendLoan(); });
     }
     if (ui->lostLoanButton) {
         ui->lostLoanButton->setVisible(staffRole);
-        connect(ui->lostLoanButton, &QPushButton::clicked, this, &MainWindow::handleMarkLost);
+        connect(ui->lostLoanButton, &QPushButton::clicked, [this]() { handleMarkLost(); });
     }
     if (ui->damageLoanButton) {
         ui->damageLoanButton->setVisible(staffRole);
-        connect(ui->damageLoanButton, &QPushButton::clicked, this, &MainWindow::handleMarkDamaged);
+        connect(ui->damageLoanButton, &QPushButton::clicked, [this]() { handleMarkDamaged(); });
     }
     if (ui->deleteLoanButton) {
         ui->deleteLoanButton->setVisible(staffRole);
-        connect(ui->deleteLoanButton, &QPushButton::clicked, this, &MainWindow::handleDeleteLoan);
+        connect(ui->deleteLoanButton, &QPushButton::clicked, [this]() { handleDeleteLoan(); });
     }
     if (ui->loansActionsGroup) {
         ui->loansActionsGroup->setVisible(staffRole);
@@ -1035,10 +995,10 @@ void MainWindow::configureReportsTab() {
     }
 
     if (reportsList) {
-        connect(reportsList, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *) {
+        connect(reportsList, &QListWidget::itemDoubleClicked, [this](QListWidgetItem *) {
             handleViewReportDetails();
         });
-        connect(reportsList, &QListWidget::itemActivated, this, [this](QListWidgetItem *) {
+        connect(reportsList, &QListWidget::itemActivated, [this](QListWidgetItem *) {
             handleViewReportDetails();
         });
     }
@@ -1064,24 +1024,24 @@ void MainWindow::configureReportsTab() {
         connect(reportStaffFilter, &QLineEdit::textChanged, this, &MainWindow::applyReportFilter);
     }
     if (ui->reportApplyButton) {
-        connect(ui->reportApplyButton, &QPushButton::clicked, this, &MainWindow::applyReportFilter);
+        connect(ui->reportApplyButton, &QPushButton::clicked, [this]() { applyReportFilter(); });
     }
     if (ui->reportClearButton) {
-        connect(ui->reportClearButton, &QPushButton::clicked, this, &MainWindow::clearReportFilter);
+        connect(ui->reportClearButton, &QPushButton::clicked, [this]() { clearReportFilter(); });
     }
 
     if (ui->submitReportButton) {
-        connect(ui->submitReportButton, &QPushButton::clicked, this, &MainWindow::handleSubmitReport);
+        connect(ui->submitReportButton, &QPushButton::clicked, [this]() { handleSubmitReport(); });
     }
     if (ui->approveReportButton) {
         ui->approveReportButton->setVisible(adminRole);
-        connect(ui->approveReportButton, &QPushButton::clicked, this, [this]() {
+        connect(ui->approveReportButton, &QPushButton::clicked, [this]() {
             handleReportStatusChange(QStringLiteral("APPROVED"));
         });
     }
     if (ui->rejectReportButton) {
         ui->rejectReportButton->setVisible(adminRole);
-        connect(ui->rejectReportButton, &QPushButton::clicked, this, [this]() {
+        connect(ui->rejectReportButton, &QPushButton::clicked, [this]() {
             handleReportStatusChange(QStringLiteral("REJECTED"));
         });
     }
@@ -1118,10 +1078,125 @@ void MainWindow::configureAccountsTab() {
 }
 
 void MainWindow::configureStatsTab() {
-    if (statisticsSummaryLabel) {
-        statisticsSummaryLabel->setWordWrap(true);
-        statisticsSummaryLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-        statisticsSummaryLabel->setText(tr("Thống kê đơn giản đang được cập nhật từ dữ liệu hiện tại."));
+    // Find widgets - try both direct and through scroll content
+    QWidget *searchWidget = ui->statsTab;
+    QWidget *scrollContent = ui->statsTab->findChild<QWidget *>(QStringLiteral("statsScrollContent"));
+    if (scrollContent) {
+        searchWidget = scrollContent;
+    }
+    
+    timePeriodCombo = searchWidget->findChild<QComboBox *>(QStringLiteral("timePeriodCombo"));
+    loanStatsTable = searchWidget->findChild<QTableWidget *>(QStringLiteral("loanStatsTable"));
+    applyFilterButton = searchWidget->findChild<QPushButton *>(QStringLiteral("applyFilterButton"));
+    
+    // Initialize date range to "Tuan nay"
+    const QDate today = QDate::currentDate();
+    statsStartDate = today.addDays(-(today.dayOfWeek() - 1));
+    statsEndDate = today;
+    
+    // Get card labels
+    totalBooksValue = searchWidget->findChild<QLabel *>(QStringLiteral("totalBooksValue"));
+    totalReadersValue = searchWidget->findChild<QLabel *>(QStringLiteral("totalReadersValue"));
+    totalLoansValue = searchWidget->findChild<QLabel *>(QStringLiteral("totalLoansValue"));
+    totalFinesValue = searchWidget->findChild<QLabel *>(QStringLiteral("totalFinesValue"));
+    overdueCount = searchWidget->findChild<QLabel *>(QStringLiteral("overdueCount"));
+    monthlyFinesValue = searchWidget->findChild<QLabel *>(QStringLiteral("monthlyFinesValue"));
+    
+    // Get charts
+    topBooksChart = searchWidget->findChild<StatsChart *>(QStringLiteral("topBooksChart"));
+    revenueChart = searchWidget->findChild<StatsChart *>(QStringLiteral("revenueChart"));
+    activeReadersList = searchWidget->findChild<QListWidget *>(QStringLiteral("activeReadersList"));
+    topBooksList = searchWidget->findChild<QListWidget *>(QStringLiteral("topBooksList"));
+    
+    // Setup top books list with custom delegate for right-aligned numbers
+    if (topBooksList) {
+        class BooksDelegate : public QStyledItemDelegate {
+        public:
+            void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
+                QStyleOptionViewItem opt = option;
+                initStyleOption(&opt, index);
+                
+                painter->save();
+                if (opt.state & QStyle::State_Selected) {
+                    painter->fillRect(opt.rect, opt.palette.highlight());
+                }
+                
+                QString text = index.data(Qt::DisplayRole).toString();
+                QString count = index.data(Qt::UserRole + 1).toString();
+                
+                QRect textRect = opt.rect.adjusted(5, 2, -50, -2);
+                QRect countRect = opt.rect.adjusted(opt.rect.width() - 55, 2, -5, -2);
+                
+                QFont font = painter->font();
+                font.setPointSize(10);
+                painter->setFont(font);
+                
+                painter->setPen(opt.palette.text().color());
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, text);
+                painter->setPen(QColor(0x6b, 0x72, 0x80));
+                painter->drawText(countRect, Qt::AlignRight | Qt::AlignVCenter, count);
+                
+                painter->restore();
+            }
+        };
+        topBooksList->setItemDelegate(new BooksDelegate());
+    }
+    
+    // Setup active readers list with delegate
+    if (activeReadersList) {
+        class ReadersDelegate : public QStyledItemDelegate {
+        public:
+            void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override {
+                QStyleOptionViewItem opt = option;
+                initStyleOption(&opt, index);
+                
+                painter->save();
+                if (opt.state & QStyle::State_Selected) {
+                    painter->fillRect(opt.rect, opt.palette.highlight());
+                }
+                
+                QString text = index.data(Qt::DisplayRole).toString();
+                QString count = index.data(Qt::UserRole + 1).toString();
+                
+                // Vẽ text (có thể nhiều dòng)
+                QRect textRect = opt.rect.adjusted(5, 2, -50, -2);
+                QRect countRect = opt.rect.adjusted(opt.rect.width() - 55, 2, -5, -2);
+                
+                QFont font = painter->font();
+                font.setPointSize(10);
+                painter->setFont(font);
+                
+                painter->setPen(opt.palette.text().color());
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, text);
+                painter->setPen(QColor(0x6b, 0x72, 0x80));
+                painter->drawText(countRect, Qt::AlignRight | Qt::AlignVCenter, count);
+                
+                painter->restore();
+            }
+        };
+        activeReadersList->setItemDelegate(new ReadersDelegate());
+    }
+    
+    // Setup table
+    if (loanStatsTable) {
+        loanStatsTable->setColumnWidth(0, 80);   // Ma phieu
+        loanStatsTable->setColumnWidth(1, 200);  // Ten sach
+        loanStatsTable->setColumnWidth(2, 150);  // Doc gia
+        loanStatsTable->setColumnWidth(3, 100);  // Ngay muon
+        loanStatsTable->setColumnWidth(4, 100);  // Ngay tra
+        loanStatsTable->setColumnWidth(5, 80);   // Tien
+        loanStatsTable->setColumnWidth(6, 120);  // Trang thai
+    }
+    
+    // Setup charts
+    if (topBooksChart) {
+        topBooksChart->setMode(StatsChart::Mode::Bar);
+        topBooksChart->setTitle(QString());
+    }
+    
+    // Connect filter button
+    if (applyFilterButton) {
+        connect(applyFilterButton, &QPushButton::clicked, this, &MainWindow::applyStatsFilter);
     }
 }
 
@@ -1159,6 +1234,9 @@ void MainWindow::reloadData() {
 
     reportsCache = toQVector(reportService.fetchAll());
     applyReportFilter();
+    
+    // Update stats tab
+    applyStatsFilter();
 
     if (adminRole) {
         accountsCache = toQVector(accountService.fetchAll());
@@ -1784,67 +1862,278 @@ void MainWindow::handleViewReportDetails() {
 void MainWindow::updateStatisticsSummary() { refreshSimpleStats(); }
 
 void MainWindow::refreshSimpleStats() {
+    updateStatsCards();
+    updateStatsCharts();
+    applyStatsFilter();
+}
+
+void MainWindow::updateStatsCards() {
     const QLocale locale;
     const QDate today = QDate::currentDate();
+    const QDate monthStart = QDate(today.year(), today.month(), 1);
 
     const int totalBooks = booksCache.size();
     const int totalReaders = readersCache.size();
-    const int totalLoans = loansCache.size();
-
-    int returnedCount = 0;
-    int overdueCount = 0;
-    int activeOverdue = 0;
-    int activeLoans = 0;
+    
+    // Filter loans by date range
+    int totalLoans = 0;
+    int overdueLoans = 0;
     qint64 totalFines = 0;
+    qint64 monthlyFines = 0;
 
     for (const auto &loan : loansCache) {
+        const QDate borrowDate = loan.getBorrowDate().isValid() ? bridge::toQDate(loan.getBorrowDate()) : QDate();
+        
+        // Skip loans outside the selected date range
+        if (!borrowDate.isValid() || borrowDate < statsStartDate || borrowDate > statsEndDate) {
+            continue;
+        }
+        
+        totalLoans++;
+        
         const bool hasReturn = loan.getReturnDate().isValid();
-        if (hasReturn) {
-            returnedCount++;
-        } else {
-            activeLoans++;
+        const QDate dueDate = loan.getDueDate().isValid() ? bridge::toQDate(loan.getDueDate()) : QDate();
+
+        if (dueDate.isValid() && !hasReturn && today > dueDate) {
+            overdueLoans++;
         }
 
-        const QDate dueDate = loan.getDueDate().isValid() ? bridge::toQDate(loan.getDueDate()) : QDate();
-        const QDate returnDate = loan.getReturnDate().isValid() ? bridge::toQDate(loan.getReturnDate()) : QDate();
+        int fine = std::max(0, loan.getFine());
+        totalFines += fine;
+        
+        if (borrowDate.isValid() && borrowDate >= monthStart) {
+            monthlyFines += fine;
+        }
+    }
 
-        if (dueDate.isValid()) {
-            if (!hasReturn && today > dueDate) {
-                overdueCount++;
-                activeOverdue++;
-            } else if (hasReturn && returnDate > dueDate) {
-                overdueCount++;
+    // Format với dấu phẩy cho số thường, X,XXX.000đ cho tiền
+    QLocale viLocale(QLocale::Vietnamese);
+    
+    if (totalBooksValue) {
+        totalBooksValue->setText(viLocale.toString(totalBooks));
+    }
+    if (totalReadersValue) {
+        totalReadersValue->setText(viLocale.toString(totalReaders));
+    }
+    if (totalLoansValue) {
+        totalLoansValue->setText(viLocale.toString(totalLoans));
+    }
+    if (totalFinesValue) {
+        QString finesText = viLocale.toString(totalFines);
+        if (totalFines > 0) {
+            finesText += QStringLiteral(".000");
+        }
+        finesText += QString::fromUtf8("đ");
+        totalFinesValue->setText(finesText);
+    }
+    if (overdueCount) {
+        overdueCount->setText(QString::number(overdueLoans) + QStringLiteral(" sach dang tre"));
+    }
+    if (monthlyFinesValue) {
+        QString monthlyText = viLocale.toString(monthlyFines);
+        if (monthlyFines > 0) {
+            monthlyText += QStringLiteral(".000");
+        }
+        monthlyText += QString::fromUtf8("đ");
+        monthlyFinesValue->setText(monthlyText);
+    }
+}
+
+void MainWindow::updateStatsCharts() {
+    // Update top books chart
+    if (topBooksChart) {
+        QMap<QString, int> bookBorrowCounts;
+        for (const auto &loan : loansCache) {
+            const QDate borrowDate = loan.getBorrowDate().isValid() ? bridge::toQDate(loan.getBorrowDate()) : QDate();
+            
+            // Skip loans outside the selected date range
+            if (!borrowDate.isValid() || borrowDate < statsStartDate || borrowDate > statsEndDate) {
+                continue;
+            }
+            
+            QString bookId = bridge::toQString(loan.getBookId());
+            QString bookTitle = bookId;
+            
+            for (const auto &book : booksCache) {
+                if (bridge::toQString(book.getId()) == bookId) {
+                    bookTitle = bridge::toQString(book.getTitle());
+                    if (bookTitle.length() > 20) {
+                        bookTitle = bookTitle.left(17) + "...";
+                    }
+                    break;
+                }
+            }
+            bookBorrowCounts[bookTitle]++;
+        }
+        
+        // Get top 5
+        QList<QPair<QString, int>> items;
+        for (auto it = bookBorrowCounts.constBegin(); it != bookBorrowCounts.constEnd(); ++it) {
+            items.append(qMakePair(it.key(), it.value()));
+        }
+        std::sort(items.begin(), items.end(), [](const QPair<QString, int> &a, const QPair<QString, int> &b) {
+            return a.second > b.second;
+        });
+        
+        QStringList top5Labels;
+        QVector<double> top5Values;
+        int limit = std::min(5, static_cast<int>(items.size()));
+        for (int i = 0; i < limit; ++i) {
+            top5Labels.append(items[i].first);
+            top5Values.append(items[i].second);
+        }
+        
+        topBooksChart->setCategories(top5Labels);
+        StatsChart::Series series;
+        series.name = QStringLiteral("So luot muon");
+        series.values = top5Values;
+        series.color = QColor(0x1d, 0x4e, 0xd8);
+        topBooksChart->setSeries({series});
+        
+        // Populate top books list (bên phải)
+        if (topBooksList) {
+            topBooksList->clear();
+            for (int i = 0; i < limit; ++i) {
+                QListWidgetItem *item = new QListWidgetItem(items[i].first);
+                item->setData(Qt::UserRole + 1, QString::number(items[i].second));
+                topBooksList->addItem(item);
             }
         }
-
-        totalFines += std::max(0, loan.getFine());
     }
-
-    if (totalBooksValue) totalBooksValue->setText(locale.toString(totalBooks));
-    if (totalReadersValue) totalReadersValue->setText(locale.toString(totalReaders));
-    if (totalLoansValue) totalLoansValue->setText(locale.toString(totalLoans));
-    if (overdueLoansValue) overdueLoansValue->setText(locale.toString(activeOverdue));
-
-    if (summaryBorrowedValue) summaryBorrowedValue->setText(locale.toString(totalLoans));
-    if (summaryReturnedValue) summaryReturnedValue->setText(locale.toString(returnedCount));
-    if (summaryOverdueValue) summaryOverdueValue->setText(locale.toString(overdueCount));
-    if (summaryFinesValue) summaryFinesValue->setText(locale.toCurrencyString(totalFines));
-
-    if (totalFinesValue) totalFinesValue->setText(locale.toCurrencyString(totalFines));
-
-    if (statisticsSummaryLabel) {
-        statisticsSummaryLabel->setText(
-            tr(
-                "<b>Tổng sách:</b> %1 &nbsp;•&nbsp; <b>Bạn đọc:</b> %2 &nbsp;•&nbsp; <b>Phiếu mượn:</b> %3"
-                "<br/><b>Đang mượn:</b> %4 &nbsp;•&nbsp; <b>Quá hạn:</b> %5 &nbsp;•&nbsp; <b>Tiền phạt:</b> %6"
-            ).arg(locale.toString(totalBooks),
-                  locale.toString(totalReaders),
-                  locale.toString(totalLoans),
-                  locale.toString(activeLoans),
-                  locale.toString(overdueCount),
-                  locale.toCurrencyString(totalFines))
-        );
+    
+    // Update revenue bar chart (show monthly revenue breakdown)
+    if (revenueChart) {
+        qint64 totalFines = 0;
+        for (const auto &loan : loansCache) {
+            const QDate borrowDate = loan.getBorrowDate().isValid() ? bridge::toQDate(loan.getBorrowDate()) : QDate();
+            
+            // Skip loans outside the selected date range
+            if (!borrowDate.isValid() || borrowDate < statsStartDate || borrowDate > statsEndDate) {
+                continue;
+            }
+            
+            totalFines += std::max(0, loan.getFine());
+        }
+        
+        int cardFees = static_cast<int>(totalFines * 0.7 / 1000);  // Convert to thousands
+        int fines = static_cast<int>(totalFines * 0.3 / 1000);
+        
+        QStringList categories;
+        categories << QStringLiteral("Lam the") << QStringLiteral("Tien phat");
+        
+        StatsChart::Series series;
+        series.name = QStringLiteral("Doanh thu (nghin dong)");
+        series.values = {static_cast<double>(cardFees), static_cast<double>(fines)};
+        series.color = QColor(59, 130, 246);  // Blue
+        
+        revenueChart->setCategories(categories);
+        revenueChart->setSeries({series});
+        revenueChart->setValueSuffix(QStringLiteral("k"));
     }
+    
+    // Update active readers list
+    if (activeReadersList) {
+        activeReadersList->clear();
+        
+        // Count total borrows per reader
+        QMap<QString, int> readerBorrowCounts;
+        for (const auto &loan : loansCache) {
+            const QDate borrowDate = loan.getBorrowDate().isValid() ? bridge::toQDate(loan.getBorrowDate()) : QDate();
+            
+            // Skip loans outside the selected date range
+            if (!borrowDate.isValid() || borrowDate < statsStartDate || borrowDate > statsEndDate) {
+                continue;
+            }
+            
+            QString readerId = bridge::toQString(loan.getReaderId());
+            readerBorrowCounts[readerId]++;
+        }
+        
+        // Get top readers
+        QList<QPair<QString, int>> readerItems;
+        for (const auto &reader : readersCache) {
+            if (!reader.isActive()) continue;
+            QString readerId = bridge::toQString(reader.getId());
+            int borrowCount = readerBorrowCounts.value(readerId, 0);
+            if (borrowCount > 0) {
+                QString readerName = bridge::toQString(reader.getFullName());
+                readerItems.append(qMakePair(readerName, borrowCount));
+            }
+        }
+        
+        std::sort(readerItems.begin(), readerItems.end(), [](const QPair<QString, int> &a, const QPair<QString, int> &b) {
+            return a.second > b.second;
+        });
+        
+        int limit = std::min(5, static_cast<int>(readerItems.size()));
+        for (int i = 0; i < limit; ++i) {
+            QString readerName = readerItems[i].first;
+            int borrowCount = readerItems[i].second;
+            
+            // Kiểm tra trạng thái trễ hạn
+            bool hasOverdue = false;
+            QString readerId;
+            for (const auto &reader : readersCache) {
+                if (bridge::toQString(reader.getFullName()) == readerName) {
+                    readerId = bridge::toQString(reader.getId());
+                    break;
+                }
+            }
+            
+            if (!readerId.isEmpty()) {
+                const QDate today = QDate::currentDate();
+                for (const auto &loan : loansCache) {
+                    if (bridge::toQString(loan.getReaderId()) == readerId) {
+                        const QDate dueDate = loan.getDueDate().isValid() ? bridge::toQDate(loan.getDueDate()) : QDate();
+                        if (dueDate.isValid() && !loan.getReturnDate().isValid() && today > dueDate) {
+                            hasOverdue = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // Format: ● Tên (icon trễ hạn nếu có)      số
+            QString icon = hasOverdue ? QString::fromUtf8("⚠") : QString::fromUtf8("●");
+            QString displayText = icon + QString(" ") + readerName;
+            if (hasOverdue) {
+                displayText += QString("\n   Tre han 1 lan");
+            }
+            
+            QListWidgetItem *item = new QListWidgetItem(displayText);
+            item->setData(Qt::UserRole + 1, QString::number(borrowCount));
+            activeReadersList->addItem(item);
+        }
+    }
+}
+
+void MainWindow::applyStatsFilter() {
+    const QDate today = QDate::currentDate();
+    
+    // Get selected time period
+    QString timePeriod = timePeriodCombo ? timePeriodCombo->currentText() : QStringLiteral("Tuan nay");
+    
+    // Calculate date range
+    QDate startDate;
+    QDate endDate = today;
+    
+    if (timePeriod == QStringLiteral("Tuan nay")) {
+        startDate = today.addDays(-(today.dayOfWeek() - 1));
+    } else if (timePeriod == QStringLiteral("Thang nay")) {
+        startDate = QDate(today.year(), today.month(), 1);
+    } else if (timePeriod == QStringLiteral("Nam nay")) {
+        startDate = QDate(today.year(), 1, 1);
+    } else { // Tat ca
+        startDate = QDate(2000, 1, 1);
+    }
+    
+    // Store date range for filtering
+    statsStartDate = startDate;
+    statsEndDate = endDate;
+    
+    // Refresh all stats with new date range
+    updateStatsCards();
+    updateStatsCharts();
 }
 
 void MainWindow::refreshAccounts() {
@@ -2932,7 +3221,7 @@ void MainWindow::setupNavigationMenu() {
             // Bottom action buttons: reload and logout
             QPushButton *reloadBtn = new QPushButton(tr("Tai lai"), navRail);
             reloadBtn->setFixedHeight(36);
-            connect(reloadBtn, &QPushButton::clicked, this, [this]() { reloadData(); statusBar()->showMessage(tr("Da tai lai."), 1500); });
+            connect(reloadBtn, &QPushButton::clicked, [this]() { reloadData(); statusBar()->showMessage(tr("Da tai lai."), 1500); });
             railLayout->addWidget(reloadBtn);
             QPushButton *logoutBtn = new QPushButton(tr("Dang xuat"), navRail);
             logoutBtn->setFixedHeight(36);
