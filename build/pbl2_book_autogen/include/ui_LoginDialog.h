@@ -30,7 +30,7 @@ public:
     QLabel *passwordLabel;
     QLineEdit *usernameEdit;
     QLabel *usernameLabel;
-    QComboBox *comboBox;
+    QComboBox *roleComboBox;
 
     void setupUi(QDialog *LoginDialog)
     {
@@ -44,19 +44,19 @@ public:
 "}"));
         titleLabel = new QLabel(LoginDialog);
         titleLabel->setObjectName("titleLabel");
-        titleLabel->setGeometry(QRect(80, 80, 441, 91));
+        titleLabel->setGeometry(QRect(30, 70, 531, 120));
         QFont font;
-        font.setFamilies({QString::fromUtf8("Academy Engraved LET")});
-        font.setPointSize(18);
+        font.setFamilies({QString::fromUtf8("Arial")});
+        font.setPointSize(60);
         titleLabel->setFont(font);
         titleLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
         errorLabel = new QLabel(LoginDialog);
         errorLabel->setObjectName("errorLabel");
-        errorLabel->setGeometry(QRect(10, 280, 401, 61));
+        errorLabel->setGeometry(QRect(120, 440, 371, 41));
         errorLabel->setAlignment(Qt::AlignmentFlag::AlignCenter);
         loginButton = new QPushButton(LoginDialog);
         loginButton->setObjectName("loginButton");
-        loginButton->setGeometry(QRect(380, 480, 151, 51));
+        loginButton->setGeometry(QRect(350, 500, 151, 51));
         loginButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #4CAF50;   /* M\303\240u n\341\273\201n n\303\272t */\n"
 "    color: white;                /* M\303\240u ch\341\273\257 */\n"
@@ -73,7 +73,7 @@ public:
 "}"));
         exitButton = new QPushButton(LoginDialog);
         exitButton->setObjectName("exitButton");
-        exitButton->setGeometry(QRect(40, 480, 161, 51));
+        exitButton->setGeometry(QRect(50, 500, 161, 51));
         exitButton->setAutoFillBackground(false);
         exitButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #E74C3C;   /* M\303\240u n\341\273\201n n\303\272t */\n"
@@ -104,9 +104,11 @@ public:
         usernameLabel = new QLabel(LoginDialog);
         usernameLabel->setObjectName("usernameLabel");
         usernameLabel->setGeometry(QRect(30, 230, 93, 28));
-        comboBox = new QComboBox(LoginDialog);
-        comboBox->setObjectName("comboBox");
-        comboBox->setGeometry(QRect(130, 390, 171, 31));
+        roleComboBox = new QComboBox(LoginDialog);
+        roleComboBox->addItem(QString());
+        roleComboBox->addItem(QString());
+        roleComboBox->setObjectName("roleComboBox");
+        roleComboBox->setGeometry(QRect(130, 390, 171, 31));
 
         retranslateUi(LoginDialog);
 
@@ -125,6 +127,9 @@ public:
         exitButton->setText(QCoreApplication::translate("LoginDialog", "Tho\303\241t", nullptr));
         passwordLabel->setText(QCoreApplication::translate("LoginDialog", "M\341\272\255t kh\341\272\251u:", nullptr));
         usernameLabel->setText(QCoreApplication::translate("LoginDialog", "T\303\252n \304\221\304\203ng nh\341\272\255p:", nullptr));
+        roleComboBox->setItemText(0, QCoreApplication::translate("LoginDialog", "Admin", nullptr));
+        roleComboBox->setItemText(1, QCoreApplication::translate("LoginDialog", "Staff", nullptr));
+
     } // retranslateUi
 
 };

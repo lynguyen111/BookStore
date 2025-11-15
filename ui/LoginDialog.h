@@ -2,7 +2,9 @@
 
 #include <QDialog>
 #include <QString>
+
 #include <memory>
+#include <QComboBox>
 
 #include "model/Account.h"
 #include "service/AccountService.h"
@@ -16,6 +18,7 @@ class LoginDialog;
 }
 
 namespace pbl2::ui {
+
 
 class LoginDialog : public QDialog {
     Q_OBJECT
@@ -44,6 +47,7 @@ private:
     QLabel *errorLabel{nullptr};
     QPushButton *loginButton{nullptr};
     QPushButton *exitButton{nullptr};
+    QComboBox *roleComboBox{nullptr};
     model::Account authenticatedAccount;
     bool exitRequestedFlag{false};
 };

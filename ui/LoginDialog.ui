@@ -25,14 +25,14 @@ background-color: rgb(70, 70, 70);
     <rect>
      <x>80</x>
      <y>80</y>
-     <width>441</width>
+     <width>451</width>
      <height>91</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Academy Engraved LET</family>
-     <pointsize>18</pointsize>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
     </font>
    </property>
    <property name="text">
@@ -45,10 +45,10 @@ background-color: rgb(70, 70, 70);
   <widget class="QLabel" name="errorLabel">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>280</y>
-     <width>401</width>
-     <height>61</height>
+     <x>120</x>
+     <y>440</y>
+     <width>371</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -61,8 +61,8 @@ background-color: rgb(70, 70, 70);
   <widget class="QPushButton" name="loginButton">
    <property name="geometry">
     <rect>
-     <x>380</x>
-     <y>480</y>
+     <x>350</x>
+     <y>500</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -93,8 +93,8 @@ QPushButton:pressed {
   <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>480</y>
+     <x>50</x>
+     <y>500</y>
      <width>161</width>
      <height>51</height>
     </rect>
@@ -175,7 +175,7 @@ QPushButton:pressed {
     <string>Tên đăng nhập:</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="roleComboBox">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -184,6 +184,16 @@ QPushButton:pressed {
      <height>31</height>
     </rect>
    </property>
+   <item>
+    <property name="text">
+     <string>Admin</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Staff</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>

@@ -28,45 +28,21 @@ namespace pbl2::ui {
 
 LoginDialog::LoginDialog(service::AccountService &accountService, QWidget *parent)
     : QDialog(parent), accountService(accountService), ui(std::make_unique<Ui::LoginDialog>()) {
-    ui->setupUi(this);
-
     setModal(true);
     setMinimumSize(400, 280);
 
     // Modern font and light background
-    QFont font("Segoe UI", 11);
+    QFont font("Arial", 30);
     setFont(font);
-    setStyleSheet(R"(
-QDialog { background: #f8fafc; border-radius: 12px; }
-QGroupBox { font-weight: bold; border-radius: 8px; }
-QLineEdit, QComboBox, QSpinBox, QDateEdit, QPlainTextEdit {
-    min-height: 32px; font-size: 11pt; border-radius: 10px; background: #fff;
-    border: 1.5px solid #e3e8f0; padding-left: 10px;
-}
-QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDateEdit:focus, QPlainTextEdit:focus {
-    border: 2px solid #2f6ad0; background: #f0f6ff;
-}
-QDialogButtonBox QPushButton, QPushButton {
-    min-width: 100px; min-height: 36px; font-size: 11pt; border-radius: 10px;
-    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #2f6ad0, stop:1 #6c63ff);
-    color: #fff; font-weight: 500; border: none;
-}
-QDialogButtonBox QPushButton:hover, QPushButton:hover {
-    background: #466ee6;
-}
-QDialogButtonBox QPushButton:disabled, QPushButton:disabled {
-    background: #bfc9db; color: #fff;
-}
-/* Form labels: darker for better contrast on macOS */
-QLabel { font-size: 11pt; color: #6b7280; }
-QLabel[error="true"] { color: #dc2626; font-size: 10.5pt; padding: 6px; font-weight: 600; }
-)");
 
+   ui->setupUi(this);
+    // setStyleSheet đã bị xoá để dùng font-size cho tiêu đề trực tiếp trong LoginDialog.ui
     usernameEdit = ui->usernameEdit;
     passwordEdit = ui->passwordEdit;
     errorLabel = ui->errorLabel;
     loginButton = ui->loginButton;
     exitButton = ui->exitButton;
+    roleComboBox = ui->roleComboBox;
 
     if (usernameEdit) usernameEdit->setMinimumHeight(32);
     if (passwordEdit) passwordEdit->setMinimumHeight(32);
@@ -81,6 +57,9 @@ QLabel[error="true"] { color: #dc2626; font-size: 10.5pt; padding: 6px; font-wei
         loginButton->setDefault(true);
         loginButton->setAutoDefault(true);
         connect(loginButton, &QPushButton::clicked, this, &LoginDialog::attemptLogin);
+    }
+    if (roleComboBox) {
+        roleComboBox->setMinimumHeight(32);
     }
 
     setAutoFillBackground(true);
@@ -100,14 +79,15 @@ void LoginDialog::onExitClicked() {
 }
 
 void LoginDialog::attemptLogin() {
-    if (!usernameEdit || !passwordEdit) {
+    if (!usernameEdit || !passwordEdit || !roleComboBox) {
         showError(tr("Khong khoi tao duoc giao dien dang nhap."));
         return;
     }
     const QString username = usernameEdit->text().trimmed();
     const QString password = passwordEdit->text();
+    const QString selectedRole = roleComboBox->currentText().trimmed();
 
-    if (username.isEmpty() || password.isEmpty()) {
+    if (username.isEmpty() || password.isEmpty() || selectedRole.isEmpty()) {
         showError(tr("Vui long nhap du thong tin."));
         return;
     }
@@ -130,8 +110,10 @@ void LoginDialog::attemptLogin() {
         return;
     }
 
-    if (!isPrivilegedRole(pbl2::bridge::toQString(authenticated.value().getRole()))) {
-        showError(tr("Chi nhan vien hoac quan ly duoc dang nhap."));
+    // Kiểm tra vai trò được chọn
+    const QString userRole = pbl2::bridge::toQString(authenticated.value().getRole()).trimmed();
+    if (userRole.compare(selectedRole, Qt::CaseInsensitive) != 0) {
+        showError(tr("Vai trò không đúng. Vui lòng chọn đúng vai trò."));
         return;
     }
 
